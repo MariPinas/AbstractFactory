@@ -1,9 +1,8 @@
-import { Login } from "./login";
-
+import { Login } from "./Login";
 
 export class MockLogin {
-    static users: Login[] = [
-        new Login("banana", "123"),
-        new Login("admin@email.com", "admin")
-    ];
+  static users: Login[] = [
+    new Login("bananaUser@email.com", "123"),
+    new Login("admin@email.com", "admin"),
+  ];
 }
