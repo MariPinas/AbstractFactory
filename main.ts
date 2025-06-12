@@ -1,22 +1,38 @@
+import * as readline from "readline-sync";
 import { LoginService } from "./login/LoginService";
 import { ConcreteFactoryContaAdm } from "./factories/ConcreteFactoryContaAdm";
 import { ConcreteFactoryContaPadrao } from "./factories/ConcreteFactoryContaPadrao";
-import * as readline from "readline-sync";
+import { ConcreteFactoryContaVIP } from "./factories/ConcreteFactoryContaVIP";
+import { ContaUsuario } from "./model/ContaUsuario";
 
-const fabricaContaPadrao = new ConcreteFactoryContaPadrao("banana", "123");
-fabricaContaPadrao.criarConta();
+const contas: ContaUsuario[] = [];
 
-const fabricaContaAdm = new ConcreteFactoryContaAdm("admin@email.com", "admin");
-fabricaContaAdm.criarConta();
+contas.push(
+  new ConcreteFactoryContaPadrao("bananaUser@email.com", "123").criarConta()
+);
+contas.push(
+  new ConcreteFactoryContaAdm("admin@email.com", "admin").criarConta()
+);
+contas.push(
+  new ConcreteFactoryContaVIP("vip@email.com", "vip123").criarConta()
+);
 
-console.log("=== LOGIN ===");
 const email = readline.question("Digite seu email: ");
-const senha = readline.question("Digite sua senha: ", { hideEchoBack: true });
+const senha = readline.question("Digite sua senha: ", { hideEchoBack: true }); //senha = *****
 
 const logou = LoginService.validaLogin(email, senha);
 
 if (logou) {
-  console.log("\nLogou com sucesso, Bem-vindo(a)!");
+  console.log("\nLogin bem-sucedido!");
+
+  // Encontrar a conta
+  const conta = contas.find((c) => c.email === email && c.senha === senha);
+
+  if (conta) {
+    console.log("Tipo da conta:", conta.getTipo());
+  } else {
+    console.log("Conta não encontrada.");
+  }
 } else {
-  console.log("\nLogin inválido. Tente novamente.");
+  console.log("\nEmail ou senha inválidos.");
 }
